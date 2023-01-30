@@ -4,7 +4,7 @@ interface IButtonProps {
     disabled?: boolean
 }
 
-const Button = ({ text, disabled = false }:IButtonProps) => {
+const Button = ({ text, disabled = false }: IButtonProps) => {
 
     return (
         <div className='flex justify-center align-center'>

@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 import Button from "../../components/Button/Button";
 import InputLabel from "../../components/InputLabel/InputLabel";
-import { useAppDispatch } from "../../hooks/redux";
+import { useAppDispatch } from "../../hooks/useRedux";
 import { IUserRegister } from "../../models/user.model";
 import { createUser, loginUser } from "../../services/user.service";
 
@@ -91,7 +91,7 @@ const Register = () => {
                                         
                         <Button text="Sign Up" disabled={checkUserInputs()}/>
                             
-                    <span className='flex justify-center px-4 mt-6' >Have an account ?<Link to={"/login"} className="text-indigo-600 ml-2">Login</Link></span>
+                        <span className='flex justify-center px-4 mt-6' >Have an account ?<Link to={"/login"} className="text-indigo-600 ml-2">Login</Link></span>
                     </form>
                 </div>
             </div>

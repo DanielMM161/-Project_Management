@@ -5,7 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Button from "../../components/Button/Button";
 import InputLabel from "../../components/InputLabel/InputLabel";
 import { loginUser } from "../../services/user.service";
-import { useAppDispatch } from './../../hooks/redux';
+import { useAppDispatch } from '../../hooks/useRedux';
 
 import '../style/login.css';
 
