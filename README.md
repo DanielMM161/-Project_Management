@@ -3,8 +3,8 @@
 ## TO-DO
 
 - [ ] Routes for frontend
-- [ ] Navbar
-- [ ] Footer
+- [ ] Navbar ( Norah )
+- [ ] Footer ( jacob )
 
 - [ ] Authentication ( Daniel )
 
