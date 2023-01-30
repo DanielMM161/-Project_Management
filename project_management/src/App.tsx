@@ -1,17 +1,22 @@
-import React from "react";
-import logo from "./logo.svg";
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+
+import { Provider } from "react-redux";
+
+import { store } from "./redux/store";
+//import Login from './pages/Login/Login';
+//import Register from './pages/Register/Register';
 import "./App.css";
-import Navbar from "./components/navbar";
-import Home from "./pages/home";
-import Footer from "./components/footer";
 
 function App() {
   return (
-    <div>
-      <Navbar />
-      <Home />
-      <Footer />
-    </div>
+    <Provider store={store}>
+      <BrowserRouter>
+        <Routes>
+          {/* <Route path="/login" element={<Login />} /> */}
+          {/* <Route path="/register" element={<Register />} /> */}
+        </Routes>
+      </BrowserRouter>
+    </Provider>
   );
 }
 
