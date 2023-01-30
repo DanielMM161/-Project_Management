@@ -1,16 +1,56 @@
 import { useState } from "react";
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import Button from "../../components/Button/Button";
 import InputLabel from "../../components/InputLabel/InputLabel";
+import { useAppDispatch } from "../../hooks/redux";
+import { IUserRegister } from "../../models/user.model";
+import { createUser, loginUser } from "../../services/user.service";
 
 const Register = () => {
+
+    const dispatch = useAppDispatch()
+    const navigate = useNavigate()
     
-    const [name, setName] = useState<string>("")
+    const [fullName, setFullName] = useState<string>("")
     const [email, setEmail] = useState<string>("")
     const [password, setPassword] = useState<string>("")
     const [repeatPassword, setRepeatPassword] = useState<string>("")
+
+    function handleRegister(e: React.FormEvent<HTMLFormElement>) {
+        e.preventDefault()
+    
+        const userRegistration: IUserRegister = {
+          fullName: fullName,
+          email: email,
+          password: password
+        }
+    
+        dispatch(createUser(userRegistration))
+          .then(value => {
+    
+            if(value.payload != null) {      
+              dispatch(loginUser({
+                email: userRegistration.email,
+                password: userRegistration.password
+              }))
+              .then(value => {
+                if(value.payload) {
+                  navigate('/home')
+                }
+              })
+            }
+          })
+      }
+    
+      function checkUserInputs(): boolean {
+        if(email.trim() !== "" && fullName.trim() !== "" && password.trim() !== "" && repeatPassword.trim() !== "") {
+          return false
+        }
+        return true
+      }
+    
     
     return (
         <div className="w-full h-full">
@@ -19,12 +59,12 @@ const Register = () => {
                     Register
                 </h1>
                 <div className='flex flex-col'>
-                    <form className='form'>
+                    <form className='form' onSubmit={(e) => handleRegister(e)}>
                         <InputLabel
                             label="Full Name"
                             typeInput="text"
-                            inputValue={name}
-                            onValueChange={(value) => setName(value)}
+                            inputValue={fullName}
+                            onValueChange={(value) => setFullName(value)}
                         />
                             
                         <InputLabel
@@ -49,9 +89,9 @@ const Register = () => {
                             onValueChange={(value) =>  setRepeatPassword(value)}
                         />                      
                                         
-                        <Button text="Sign Up" />
+                        <Button text="Sign Up" disabled={checkUserInputs()}/>
                             
-                    <span className='flex justify-center px-4 mt-6' >Have an account ? <Link to={"/login"} className="text-indigo-600 ml-2">  Login</Link></span>
+                    <span className='flex justify-center px-4 mt-6' >Have an account ?<Link to={"/login"} className="text-indigo-600 ml-2">Login</Link></span>
                     </form>
                 </div>
             </div>
