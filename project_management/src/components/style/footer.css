@@ -1,12 +1,6 @@
-.footer{
-    background-color: grey;
-    color: white;
-    padding-top: 16px;
-    padding-bottom: 16px;
-}
-.footer_para{
-    text-align: center;
-}
 a{
+    text-decoration: none;
+}
+a:hover{
     text-decoration: underline;
 }
