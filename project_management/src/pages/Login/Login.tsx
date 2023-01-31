@@ -39,6 +39,7 @@ const Login = () => {
             
               <InputLabel
                 label="Email"
+                placeHolder="Email"
                 typeInput="text"
                 inputValue={email}
                 onValueChange={(value) =>  setEmail(value)}
@@ -46,6 +47,7 @@ const Login = () => {
             
               <InputLabel
                 label="Password"
+                placeHolder="Password"
                 typeInput="password"
                 extraClass="mb-8"
                 inputValue={password}
