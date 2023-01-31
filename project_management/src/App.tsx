@@ -29,7 +29,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/home" element={<Home />} />
           {/*  path="/project/:id" */}
-          <Route path="/project" element={<ProjectDashboard />} />
+          <Route path="/project/:projectId" element={<ProjectDashboard />} />
           <Route path="/dashboard" element={<Dashboard />} />
         </Routes>
         <Footer />

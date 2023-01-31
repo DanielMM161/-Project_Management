@@ -5,9 +5,11 @@ import Modal from '../../components/Modal/Modal';
 import { createNewProject, fetcProjecstByUser, deleteProject } from './../../services/project.service';
 import { addProject } from '../../redux/slices/user.slice';
 import ProjectItems from './ProjectItmes';
+import { useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {
 
+  const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const userState = useAppSelector(state => state.user)
   const { user } = userState
@@ -77,7 +79,6 @@ const Dashboard = () => {
       }
     })
   }
-  
 
   return (
     <div className='w-full h-full flex flex-col'>
@@ -116,7 +117,7 @@ const Dashboard = () => {
                 projectId={project._id}
                 projectName={project.name} 
                 projectDate={project.createdAt}
-                deleteProject={(value) => handleDeleteProject(value)}
+                deleteProject={(value) => handleDeleteProject(value)}                
               />
             )
           })

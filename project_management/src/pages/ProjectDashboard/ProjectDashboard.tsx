@@ -23,6 +23,7 @@ const ProjectDashboard = () => {
 
 
   const [arr, setArr] = useState<inputArr[]>([]);
+  const { projectId } = useParams()
   const id = "63d8e83ba4552d8a50e5f73f" //useParams() 
   const [ideas, setIdeas] = useState<Task[]>([])
   const [todo, setTodo] = useState<Task[]>([])
@@ -59,11 +60,11 @@ const ProjectDashboard = () => {
 
   useEffect(() => {
 
-    axios.get(`http://localhost:5000/api/project/${id}`)
+    axios.get(`http://localhost:5000/api/project/${projectId}`)
       .then(res => setProject(res.data.project))
       .catch(err => console.log(err))
 
-    axios.get(`http://localhost:5000/api/project/${id}/tasks`)
+    axios.get(`http://localhost:5000/api/project/${projectId}/tasks`)
       .then(res => {
         if (res.data.tasks.length > 0) {
           console.log(res.data.tasks)
