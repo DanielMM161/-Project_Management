@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, current } from "@reduxjs/toolkit";
 
 import { userInitialState } from "../../models/user.model";
 import { createUser, fetchUserProfile, fetchUserSession, loginUser } from "../../services/user.service";
@@ -11,6 +11,20 @@ export const userSlice = createSlice({
       localStorage.removeItem('user')
       localStorage.removeItem('access_token')
       state.user = null
+    },
+    setUser: (state, action) => {
+      localStorage.setItem('user', JSON.stringify(action.payload))         
+      state.user = action.payload            
+    },
+    addProject:(state, action) => {
+      if(state.user != null) {
+        state.user.projects = action.payload
+      }      
+    },
+    addSingleProject:(state, action) => {
+      if(state.user != null) {
+        state.user.projects = action.payload
+      }      
     }
   },
   extraReducers: (build) => {
@@ -45,6 +59,6 @@ export const userSlice = createSlice({
   }
 });
 
-export const { logOut } = userSlice.actions
+export const { logOut, setUser, addProject } = userSlice.actions
 
 export default userSlice.reducer

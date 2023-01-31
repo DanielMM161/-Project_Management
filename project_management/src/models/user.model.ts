@@ -1,16 +1,26 @@
-export interface IUserAuth {
+export interface IUserAuth {  
   email: string
   password: string
 }
 
 export interface IUserRegister extends IUserAuth {
   fullName: string
+  repeatPassword: string
+}
+
+interface IProject {
+  _id: string
+  name: string
+  createdAt: string
+  users: string[]
 }
 
 export interface IUser {
-  fullName: string
+  id?: string
+  fullname: string
   email: string
-  projects: string[]
+  projects: IProject[]
+  userToken: string
 }
 
 interface IUserState {

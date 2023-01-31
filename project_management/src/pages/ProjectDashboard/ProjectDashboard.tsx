@@ -23,6 +23,7 @@ const ProjectDashboard = () => {
 
 
   const [arr, setArr] = useState<inputArr[]>([]);
+  const { projectId } = useParams()
   const id = "63d8e83ba4552d8a50e5f73f" //useParams() 
   const [ideas, setIdeas] = useState<Task[]>([])
   const [todo, setTodo] = useState<Task[]>([])
