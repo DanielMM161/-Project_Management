@@ -1,9 +1,11 @@
-import { React ,useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import ProjectItems from './ProjectItmes';
 import { Store } from 'react-notifications-component';
 import { useAppDispatch, useAppSelector } from '../../hooks/useRedux';
-import { createNewProject } from '../../services/project.service';
 import { fetchUserSession } from '../../services/user.service';
+import Modal from '../../components/Modal/Modal';
+import { createNewProject } from './../../services/project.service';
+import EditTaskForm from '../../components/EditTaskForm/EditTaskForm';
 
 const Dashboard = () => {
 
@@ -91,6 +93,13 @@ const Dashboard = () => {
 
 
       </div>
+      <Modal
+        showModal={true}
+        title='hey'
+        closeDialog={() => {}}        
+      >
+        <EditTaskForm taskName='asd' acceptClick={() => {}} closeModal={() => {}} taskDescription="asdsaad"/>
+      </Modal>
     </div>
   )
 }

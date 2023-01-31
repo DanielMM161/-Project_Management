@@ -7,7 +7,9 @@ import ModalFooter from '../ModalFooter/ModalFooter';
 
 import { ITask } from '../../models/task.model';
 
+import DropDown from '../CheckBox/CheckBox';
 import './style.css'
+import CheckBox from '../CheckBox/CheckBox';
 
 interface IEditTaskFormProps {
   taskName: string;
@@ -57,6 +59,9 @@ const EditTaskForm = ({
           inputValue={desription}
           onValueChange={(e) => setDescription(e)}        
         />
+
+        <h3>Status</h3>
+        <CheckBox />
 
         <ModalFooter cancelClick={() => closeModal()}/>
       </form>
