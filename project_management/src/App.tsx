@@ -12,16 +12,30 @@ import Home from './pages/Home/Home';
 import Dashboard from './pages/Dashboard/Dashboard';
 import "./App.css";
 
+import ProjectDashboard from './pages/ProjectDashboard/ProjectDashboard';
+import Navbar from './components/navbar';
+
+import Dashboard from './pages/Dashboard/Dashboard';
+
+
 function App() {
   return (
     <Provider store={store}>
       <ReactNotifications />
       <BrowserRouter>
+        <Navbar />
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/home" element={<Home />} />
+
+
+          
+          {/*  path="/project/:id" */}
+          <Route path="/project" element={<ProjectDashboard />} />
+
           <Route path="/dashboard" element={<Dashboard />} />
+
         </Routes>
       </BrowserRouter>
     </Provider>

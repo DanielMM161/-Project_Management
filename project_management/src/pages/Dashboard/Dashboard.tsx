@@ -1,7 +1,6 @@
-import { useEffect, useState } from 'react'
-
+import { React ,useEffect, useState } from 'react'
+import ProjectItems from './ProjectItmes';
 import { Store } from 'react-notifications-component';
-
 import { useAppDispatch, useAppSelector } from '../../hooks/useRedux';
 import { createNewProject } from '../../services/project.service';
 import { fetchUserSession } from '../../services/user.service';
@@ -11,9 +10,16 @@ const Dashboard = () => {
   const dispatch = useAppDispatch()
   const userState = useAppSelector(state => state.user)
   const { user } = userState
+  const userUrl:string = "https://www.themealdb.com/api/json/v1/1/search.php?s=";
+  const [userProject, setUserProject] = useState<ProjectType[]>([]);
 
   const [showInput, setShowInput] = useState(false)
   const [projectName, setProjectName] = useState("")
+  
+  type ProjectType = {
+  idMeal: string;
+  strMeal: string;
+  }
   
   function handleCreateNewProject() {
     if(projectName.trim() != "") {
@@ -39,6 +45,13 @@ const Dashboard = () => {
       })
     }
   }
+  
+    useEffect(() =>{
+    fetch(userUrl)
+    .then((response) => response.json() )
+    .then((data) => setUserProject(data.meals))
+    .catch((error) => console.log(error));
+  },[userUrl]);
 
   return (
     <div className='w-full h-full flex flex-col'>
@@ -66,7 +79,17 @@ const Dashboard = () => {
       </div>
       {/* part -2 jacob */}
       <div>
+
         <h1>Your Projects</h1>
+
+        <h1 className='text-center'>Your Project</h1>
+        {
+          userProject.map((project) => {
+            return <ProjectItems key = {project.idMeal} prop = {project}/>
+          })
+        }
+
+
       </div>
     </div>
   )

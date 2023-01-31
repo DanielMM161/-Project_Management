@@ -19,7 +19,7 @@ const Login = () => {
 
   function handleLogin(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
-    if (email.trim() !== "" && password.trim() !== "") {
+    if (email.trim() != "" && password.trim() != "") {
       dispatch(loginUser({email: email, password: password}))
       .then(value => {
         if(value.payload) {
