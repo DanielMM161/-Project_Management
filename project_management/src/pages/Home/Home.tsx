@@ -4,20 +4,11 @@ import { UseModal } from "../../hooks/useModal"
 
 const Home = () => {
 
-  const {showModal, toggle} = UseModal()
-
   return (
-   <>
-     <Button text="show modal"/>
+    <div>
 
-    <Modal 
-      title="" 
-      showModal={showModal} 
-      closeDialog={() => toggle()}
-    >
-      <></>
-    </Modal>
-   </>
+    </div>
+
   )
 }
 
