@@ -60,11 +60,11 @@ const ProjectDashboard = () => {
 
   useEffect(() => {
 
-    axios.get(`http://localhost:5000/api/project/${projectId}`)
+    axios.get(`http://localhost:5000/api/project/${id}`)
       .then(res => setProject(res.data.project))
       .catch(err => console.log(err))
 
-    axios.get(`http://localhost:5000/api/project/${projectId}/tasks`)
+    axios.get(`http://localhost:5000/api/project/${id}/tasks`)
       .then(res => {
         if (res.data.tasks.length > 0) {
           console.log(res.data.tasks)
