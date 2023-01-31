@@ -10,7 +10,7 @@ export interface IUserRegister extends IUserAuth {
 export interface IUser {
   fullName: string
   email: string
-  projects: []
+  projects: string[]
 }
 
 interface IUserState {

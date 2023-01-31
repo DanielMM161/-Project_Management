@@ -62,6 +62,7 @@ const Register = () => {
                     <form className='form' onSubmit={(e) => handleRegister(e)}>
                         <InputLabel
                             label="Full Name"
+                            placeHolder="Full Name"
                             typeInput="text"
                             inputValue={fullName}
                             onValueChange={(value) => setFullName(value)}
@@ -69,6 +70,7 @@ const Register = () => {
                             
                         <InputLabel
                             label="Email"
+                            placeHolder="Email"
                             typeInput="text"
                             inputValue={email}
                             onValueChange={(value) =>  setEmail(value)}
@@ -76,6 +78,7 @@ const Register = () => {
                             
                         <InputLabel
                             label="Password"
+                            placeHolder="Password"
                             typeInput="password"
                             inputValue={password}
                             onValueChange={(value) =>  setPassword(value)}
@@ -83,6 +86,7 @@ const Register = () => {
 
                         <InputLabel
                             label="Repeat Password"
+                            placeHolder="Repeat Password"
                             typeInput="password"
                             extraClass="mb-8"
                             inputValue={repeatPassword}

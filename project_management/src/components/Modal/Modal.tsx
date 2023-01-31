@@ -26,9 +26,9 @@ const Modal = ({
 
               <div className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
                 <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                {children}
+                  {children}
                 </div>
-                <ModalFooter acceptClick={() => {}} cancelClick={() => {}}/>
+                
               </div>
             </div>
           </div>
