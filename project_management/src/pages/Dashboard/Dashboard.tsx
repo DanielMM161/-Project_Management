@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import {useEffect, useState } from 'react'
 import ProjectItems from './ProjectItmes';
 import { Store } from 'react-notifications-component';
 import { useAppDispatch, useAppSelector } from '../../hooks/useRedux';

@@ -1,60 +1,44 @@
 import axios from 'axios';
 import React, { useEffect } from 'react'
 import { useState } from "react";
+import { useParams } from 'react-router-dom'
 
 type Task = {
   name: string;
   status: string;
 };
 
+type Projct = {
+  name: string,
+  users: Object[],
+}
 const ProjectDashboard = () => {
 
-  // ToDo: get project 
-
+  const id = "63d8e83ba4552d8a50e5f73f" //useParams() 
   const [ideas, setIdeas] = useState<Task[]>([])
   const [todo, setTodo] = useState<Task[]>([])
   const [inProgress, setInProgress] = useState<Task[]>([])
   const [finished, setFinished] = useState<Task[]>([])
+  const [project, setProject] = useState<Projct>()
 
   useEffect(() => {
 
-    //remove this when routes are ready
-    const tasks_list = [{
-      name: 'task1',
-      status: 'todo'
-    },
-    {
-      name: 'task2',
-      status: 'todo'
-    },
-    {
-      name: 'task3',
-      status: 'idea'
-    },
-    {
-      name: 'task4',
-      status: 'inProgress'
-    },
-    {
-      name: 'task5',
-      status: 'finished'
-    }]
+    axios.get(`http://localhost:5000/api/project/${id}`)
+      .then(res => setProject(res.data.project))
+      .catch(err => console.log(err))
 
-    //remove this when routes are ready
-    setIdeas(tasks_list.filter(task => task.status == 'idea'))
-    setTodo(tasks_list.filter(task => task.status == 'todo'))
-    setInProgress(tasks_list.filter(task => task.status == 'inProgress'))
-    setFinished(tasks_list.filter(task => task.status == 'finished'))
+    axios.get(`http://localhost:5000/api/project/${id}/tasks`)
+      .then(res => {
+        if (res.data.tasks.length > 0) {
+          console.log(res.data.tasks)
+          setIdeas(res.data.tasks.filter((task: any) => task.status == 'idea'))
+          setTodo(res.data.tasks.filter((task: any) => task.status == 'todo'))
+          setInProgress(res.data.tasks.filter((task: any) => task.status == 'inProgress'))
+          setFinished(res.data.tasks.filter((task: any) => task.status == 'finished'))
+        }
 
-    // axios.get(`http://localhost:5000/api/project/${project.id}/tasks`)
-    //   .then(res => {
-    //     setIdeas(tasks_list.filter(task => task.status == 'idea'))
-    //     setTodo(tasks_list.filter(task => task.status == 'todo'))
-    //     setInProgress(tasks_list.filter(task => task.status == 'inProgress'))
-    //     setFinished(tasks_list.filter(task => task.status == 'finished'))
-
-    //   })
-    //   .catch(err => console.log(err))
+      })
+      .catch(err => console.log(err))
 
 
   }, [])
@@ -64,7 +48,7 @@ const ProjectDashboard = () => {
     <div className='m-5 mt-20'>
       <div className='px-10 mt-5'>
         <div className="text-lg font-bold mr-4">hi, username</div>
-        <div className="text-2xl font-bold mr-4">project name</div>
+        <div className="text-2xl font-bold mr-4">{project ? project.name : ''}</div>
       </div>
       <div className='flex gap-5 container p-10 mx-auto'>
         <div className='rounded-lg border text-center w-full mx-auto'>
@@ -76,6 +60,7 @@ const ProjectDashboard = () => {
               <div className='my-2 py-1 border' key={index}>
                 {task.name}
               </div>)}
+            <div className='my-2 py-1 border'>Create a task</div>
           </div>
         </div>
         <div className='rounded-lg border text-center w-full mx-auto'>

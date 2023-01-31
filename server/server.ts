@@ -11,6 +11,13 @@ const dbo = require("./db/conn.ts");
 
 app.get("/", (req, res) => res.send("Hello world!"));
 
+require("./routes/project.routes.ts")(app)
+require("./routes/task.routes.ts")(app)
+require("./routes/comment.routes.ts")(app)
+require("./routes/user.routes.ts")(app)
+
+
+
 app.listen(port, () => {
   // perform a database connection when server starts
   // dbo.connectToServer(function (err) {
