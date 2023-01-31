@@ -10,11 +10,12 @@ import Login from './pages/Login/Login';
 import Register from './pages/Register/Register';
 import Home from './pages/Home/Home';
 import Dashboard from './pages/Dashboard/Dashboard';
-import "./App.css";
 
 import ProjectDashboard from './pages/ProjectDashboard/ProjectDashboard';
 import Navbar from './components/navbar';
 import Footer from './components/footer';
+import "./App.css";
+
 
 
 function App() {
