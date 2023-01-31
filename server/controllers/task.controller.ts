@@ -22,7 +22,7 @@ module.exports.findSingleTask = (req, res) => {
     }
     catch (err) {
         console.log(err)
-        res.json({ status: 'error', error: 'invaild token' })
+        res.status(400).json('invaild token')
     }
 }
 
@@ -33,35 +33,58 @@ module.exports.createNewTask = (req, res) => {
 }
 
 module.exports.updateTask = (req, res) => {
-    const token = req.headers['x-access-token']
-    try {
-        const secretKey = process.env.JWT_SECRET_KEY
-        const decoded = jwt.verify(token, secretKey)
-        const id = decoded.userId
-        Task.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true })
-            .then(updatedTask => {
-                if (req.body.assigned_id) {
-                    Project.findByIdAndUpdate(
-                        { _id: req.body.project_id },
-                        { $push: { users: req.body.assigned_id } },
-                        { new: true, runValidators: true },
-                        function (error, success) {
-                            if (error) {
-                                console.log(error);
-                            } else {
-                                console.log(success);
-                            }
-                        })
+    // const token = req.headers['x-access-token']
+    // try {
+    //     const secretKey = process.env.JWT_SECRET_KEY
+    //     const decoded = jwt.verify(token, secretKey)
+    //     const id = decoded.userId
+    //     Task.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true })
+    //         .then(updatedTask => {
+    //             if (req.body.assigned_id) {
+    //                 Project.findByIdAndUpdate(
+    //                     { _id: req.body.project_id },
+    //                     { $push: { users: req.body.assigned_id } },
+    //                     { new: true, runValidators: true },
+    //                     function (error, success) {
+    //                         if (error) {
+    //                             console.log(error);
+    //                         } else {
+    //                             console.log(success);
+    //                         }
+    //                     })
 
-                }
-                res.json({ task: updatedTask })
-            })
-            .catch(err => res.status(400).json(err))
-    }
-    catch (err) {
-        console.log(err)
-        res.json({ status: 'error', error: 'invaild token' })
-    }
+    //             }
+    //             res.json({ task: updatedTask })
+    //         })
+    //         .catch(err => res.status(400).json(err))
+    // }
+    // catch (err) {
+    //     console.log(err)
+    //     res.status(400).json({ err: 'invaild token' })
+    // }
+
+    console.log(req.params.id)
+    console.log(req.body)
+    Task.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true })
+        .then(updatedTask => {
+            if (req.body.assigned_id && Project.find({ _id: req.body.project_id, users: req.body.assigned_id }).length == 0) {
+                Project.findByIdAndUpdate(
+                    { _id: req.body.project_id },
+                    { $push: { users: req.body.assigned_id } },
+                    { new: true, runValidators: true },
+                    function (error, success) {
+                        if (error) {
+                            console.log(error);
+                        } else {
+                            console.log(success);
+                        }
+                    })
+
+            }
+            res.json({ task: updatedTask })
+        })
+        .catch(err => res.status(400).json(err))
+
 }
 
 module.exports.deleteTask = (req, res) => {

@@ -14,7 +14,7 @@ module.exports.findAllProjects = (req, res) => {
     }
     catch (err) {
         console.log(err)
-        res.json({ status: 'error', error: 'invaild token' })
+        res.json({ status: '400', error: 'invaild token' })
     }
 }
 
@@ -30,7 +30,7 @@ module.exports.findSingleProject = (req, res) => {
     }
     catch (err) {
         console.log(err)
-        res.json({ status: 'error', error: 'invaild token' })
+        res.status(400).json({err:'invaild token' })
     }
 }
 
@@ -47,7 +47,7 @@ module.exports.createNewProject = (req, res) => {
     }
     catch (err) {
         console.log(err)
-        res.json({ status: 'error', error: 'invaild token' })
+        res.status(400).json('invaild token' )
     }
 }
 
@@ -63,7 +63,7 @@ module.exports.updateProject = (req, res) => {
     }
     catch (err) {
         console.log(err)
-        res.json({ status: 'error', error: 'invaild token' })
+        res.status(400).json('invaild token' )
     }
 }
 
@@ -74,7 +74,19 @@ module.exports.deleteProject = (req, res) => {
 }
 
 module.exports.findAllTasksOfProject = (req, res) => {
+    // const token = req.headers['x-access-token']
+    // try {
+    //     const secretKey = process.env.JWT_SECRET_KEY
+    //     const decoded = jwt.verify(token, secretKey)
+    //     Task.find({ project_id: req.params.id })
+    //         .then(Tasks => res.json({ tasks: Tasks }))
+    //         .catch(err => res.status(400).json(err))
+    // }
+    // catch (err) {
+    //     console.log(err)
+    //     res.status(400).json({err:'invaild token' })
+    // }
     Task.find({ project_id: req.params.id })
-        .then(Tasks => res.json({ tasks: Tasks }))
-        .catch(err => res.status(400).json(err))
+            .then(Tasks => res.json({ tasks: Tasks }))
+            .catch(err => res.status(400).json(err))
 }
