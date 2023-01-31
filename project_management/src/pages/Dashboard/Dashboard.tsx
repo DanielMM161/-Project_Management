@@ -117,7 +117,8 @@ const Dashboard = () => {
                 projectId={project._id}
                 projectName={project.name} 
                 projectDate={project.createdAt}
-                deleteProject={(value) => handleDeleteProject(value)}                
+                deleteProject={(value) => handleDeleteProject(value)}
+                goProject={(value) => navigate(`/project/${value}`)}           
               />
             )
           })
