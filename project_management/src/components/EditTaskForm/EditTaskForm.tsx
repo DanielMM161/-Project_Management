@@ -7,7 +7,6 @@ import ModalFooter from '../ModalFooter/ModalFooter';
 
 import { ITask } from '../../models/task.model';
 
-import DropDown from '../CheckBox/CheckBox';
 import './style.css'
 import CheckBox from '../CheckBox/CheckBox';
 
@@ -27,6 +26,7 @@ const EditTaskForm = ({
 
   const [title, setTitle] = useState(taskName)
   const [desription, setDescription] = useState(taskDescription)
+  const [status, setStatus] = useState("")
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()    
@@ -61,7 +61,7 @@ const EditTaskForm = ({
         />
 
         <h3>Status</h3>
-        <CheckBox />
+        <CheckBox text='Todo' onChange={(newStatus) => setStatus(newStatus)}/>
 
         <ModalFooter cancelClick={() => closeModal()}/>
       </form>
