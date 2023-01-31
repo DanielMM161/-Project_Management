@@ -15,6 +15,7 @@ const mockUser: IUser = {
 export const fetchUserProfile = createAsyncThunk('fetchUserProfile',
   async (token: string, thunkAPI) => {
 
+  mockUser.projects.push("new project")
   return mockUser;
 
   // const response = await axios.get(`${BASE_URL}/auth/profile`, {
