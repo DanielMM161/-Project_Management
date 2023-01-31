@@ -1,5 +1,7 @@
 const Task = require("../models/task.model.ts")
 const Comments = require("../models/comment.model.ts")
+const jwt = require("jsonwebtoken")
+const Project = require("../models/project.model.ts")
 
 
 module.exports.findAllTasks = (req, res) => {
@@ -9,9 +11,19 @@ module.exports.findAllTasks = (req, res) => {
 }
 
 module.exports.findSingleTask = (req, res) => {
-    Task.findOne({ _id: req.params.id })
-        .then(singleTask => res.json({ task: singleTask }))
-        .catch(err => res.status(400).json(err))
+    const token = req.headers['x-access-token']
+    try {
+        const secretKey = process.env.JWT_SECRET_KEY
+        const decoded = jwt.verify(token, secretKey)
+        const id = decoded.userId
+        Task.findOne({ _id: req.params.id })
+            .then(singleTask => res.json({ task: singleTask }))
+            .catch(err => res.status(400).json(err))
+    }
+    catch (err) {
+        console.log(err)
+        res.json({ status: 'error', error: 'invaild token' })
+    }
 }
 
 module.exports.createNewTask = (req, res) => {
@@ -21,9 +33,35 @@ module.exports.createNewTask = (req, res) => {
 }
 
 module.exports.updateTask = (req, res) => {
-    Task.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true })
-        .then(updatedTask => res.json({ task: updatedTask }))
-        .catch(err => res.status(400).json(err))
+    const token = req.headers['x-access-token']
+    try {
+        const secretKey = process.env.JWT_SECRET_KEY
+        const decoded = jwt.verify(token, secretKey)
+        const id = decoded.userId
+        Task.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true })
+            .then(updatedTask => {
+                if (req.body.assigned_id) {
+                    Project.findByIdAndUpdate(
+                        { _id: req.body.project_id },
+                        { $push: { users: req.body.assigned_id } },
+                        { new: true, runValidators: true },
+                        function (error, success) {
+                            if (error) {
+                                console.log(error);
+                            } else {
+                                console.log(success);
+                            }
+                        })
+
+                }
+                res.json({ task: updatedTask })
+            })
+            .catch(err => res.status(400).json(err))
+    }
+    catch (err) {
+        console.log(err)
+        res.json({ status: 'error', error: 'invaild token' })
+    }
 }
 
 module.exports.deleteTask = (req, res) => {

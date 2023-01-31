@@ -2,7 +2,11 @@ const mongoose = require("mongoose")
 
 const taskScheme = mongoose.Schema(
     {
-        name: String,
+        name: {
+            type: String,
+            minlength: [3, "Name must be at least 3 chars"]
+        },
+
         description: String,
 
         status: {

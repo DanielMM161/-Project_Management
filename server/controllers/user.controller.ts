@@ -1,4 +1,5 @@
 const User = require("../models/user.model.ts");
+const Project = require("../models/project.model.ts");
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
 
@@ -11,7 +12,7 @@ module.exports.signup = async function (req, res) {
     }
     const secretKey = process.env.JWT_SECRET_KEY
     const token = jwt.sign(payload, secretKey)
-    res.json({userToken: token });
+    res.json({userToken: token ,fullname:user.fullname, email:user.email });
 
   } catch (err) {
     res.status(400).json(err);
@@ -36,7 +37,7 @@ module.exports.login = async function (req, res) {
     const secretKey = process.env.JWT_SECRET_KEY
     const token = jwt.sign(payload, secretKey)
 
-    res.json({ userToken: token })
+    res.json({ userToken: token, fullname:user.fullname, email:user.email })
 
   } catch (err) {
     res.status(400).json(" email dosn't exist ");
@@ -60,3 +61,9 @@ module.exports.deleteUser = (req, res) => {
       .then(deletedUser => res.json({ user: deletedUser }))
       .catch(err => res.json({ message: "something went wrong", error: err }))
 }
+
+// module.exports.findAllTasksOfProject = (req, res) => {
+//   Project.find({ users: req.params.id })
+//       .then(Projects => res.json({ projects: Projects }))
+//       .catch(err => res.status(400).json(err))
+// }
