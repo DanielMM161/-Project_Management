@@ -8,6 +8,8 @@ import { loginUser } from "../../services/user.service";
 import { useAppDispatch } from '../../hooks/useRedux';
 
 import '../style/login.css';
+import { setUser } from "../../redux/slices/user.slice";
+import { IUser } from "../../models/user.model";
 
 const Login = () => {
 
@@ -23,7 +25,9 @@ const Login = () => {
       dispatch(loginUser({email: email, password: password}))
       .then(value => {
         if(value.payload) {
-          navigate('/home')
+          const user: IUser = value.payload          
+          dispatch(setUser({email: user.email, fullName: user.fullname, userToken: user.userToken, projects: []}))
+          navigate('/dashboard')
         }
       })
     }

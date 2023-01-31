@@ -1,11 +1,10 @@
 import {useEffect, useState } from 'react'
-import ProjectItems from './ProjectItmes';
 import { Store } from 'react-notifications-component';
 import { useAppDispatch, useAppSelector } from '../../hooks/useRedux';
-import { fetchUserSession } from '../../services/user.service';
 import Modal from '../../components/Modal/Modal';
-import { createNewProject } from './../../services/project.service';
-import EditTaskForm from '../../components/EditTaskForm/EditTaskForm';
+import { createNewProject, fetcProjecstByUser } from './../../services/project.service';
+import { addProject } from '../../redux/slices/user.slice';
+import ProjectItems from './ProjectItmes';
 
 const Dashboard = () => {
 
@@ -17,6 +16,17 @@ const Dashboard = () => {
 
   const [showInput, setShowInput] = useState(false)
   const [projectName, setProjectName] = useState("")
+
+  useEffect(() => {
+    if(user != null) {
+      dispatch(fetcProjecstByUser(user.userToken))
+      .then(value => {
+        if(value != null) {
+          dispatch(addProject(value.payload))
+        }
+      })
+    }
+  }, [])
   
   type ProjectType = {
   idMeal: string;
@@ -25,10 +35,11 @@ const Dashboard = () => {
   
   function handleCreateNewProject() {
     if(projectName.trim() != "") {
-      dispatch(createNewProject(projectName))
+      dispatch(createNewProject({projectName: projectName, userToken: user?.userToken ?? ""}))
       .then(value => {
         if(value) {
-          dispatch(fetchUserSession())          
+          console.log("value.payload ---> ", value.payload)
+          dispatch(addProject(value.payload))
           Store.addNotification({
             title: "Project Created",
             message: `The Project ${projectName} Was Created`,
@@ -61,7 +72,7 @@ const Dashboard = () => {
       {/* part-1 daniel */}
       <div className='flex w-full justify-between'>
         <div className='flex flex-col w-1/2'>
-          <span>Hi {user?.fullName}</span>
+          <span>Hi {user?.fullname}</span>
           <span>Welcome To DashBoard</span>
         </div>
         <div className='flex flex-col w-1/2'>
@@ -86,8 +97,8 @@ const Dashboard = () => {
 
         <h1 className='text-center'>Your Project</h1>
         {
-          userProject.map((project) => {
-            return <ProjectItems key = {project.idMeal} prop = {project}/>
+          user?.projects.map((project) => {
+            return <ProjectItems projectName={project.name} projectDate={project.createdAt} />
           })
         }
 

@@ -5,7 +5,8 @@ import { Link, useNavigate } from "react-router-dom";
 import Button from "../../components/Button/Button";
 import InputLabel from "../../components/InputLabel/InputLabel";
 import { useAppDispatch } from "../../hooks/useRedux";
-import { IUserRegister } from "../../models/user.model";
+import { IUser, IUserRegister } from "../../models/user.model";
+import { setUser } from "../../redux/slices/user.slice";
 import { createUser, loginUser } from "../../services/user.service";
 
 const Register = () => {
@@ -19,30 +20,24 @@ const Register = () => {
     const [repeatPassword, setRepeatPassword] = useState<string>("")
 
     function handleRegister(e: React.FormEvent<HTMLFormElement>) {
-        e.preventDefault()
-    
-        const userRegistration: IUserRegister = {
-          fullName: fullName,
-          email: email,
-          password: password
-        }
-    
-        dispatch(createUser(userRegistration))
-          .then(value => {
-    
-            if(value.payload != null) {      
-              dispatch(loginUser({
-                email: userRegistration.email,
-                password: userRegistration.password
-              }))
-              .then(value => {
-                if(value.payload) {
-                  navigate('/home')
-                }
-              })
-            }
-          })
+      e.preventDefault()
+  
+      const userRegistration: IUserRegister = {
+        fullName: fullName,
+        email: email,
+        password: password,
+        repeatPassword: repeatPassword
       }
+  
+      dispatch(createUser(userRegistration))
+      .then(value => {
+        if(value.payload != null) {
+          const user: IUser = value.payload          
+          dispatch(setUser({email: user.email, fullName: user.fullname, userToken: user.userToken}))
+          navigate('/dashboard')
+        }
+      })
+    }
     
       function checkUserInputs(): boolean {
         if(email.trim() !== "" && fullName.trim() !== "" && password.trim() !== "" && repeatPassword.trim() !== "") {
