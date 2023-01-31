@@ -5,6 +5,7 @@ module.exports = app => {
   app.post("/api/login", UserController.login)
   app.get("/api/user", UserController.getAllUsers)
   app.get('/api/user/:id', UserController.findUserById)
+  // app.get('/api/user/:id/projects', UserController.findAllTasksOfProject)
   app.delete('/api/user/delete/:id', UserController.deleteUser)
 }
 
