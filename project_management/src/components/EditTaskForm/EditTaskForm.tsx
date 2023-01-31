@@ -5,8 +5,9 @@ import InputLabel from './../InputLabel/InputLabel';
 import TextAreaLabel from '../TextAreaLabel/TextAreaLabel';
 import ModalFooter from '../ModalFooter/ModalFooter';
 
-import './style.css'
 import { ITask } from '../../models/task.model';
+
+import './style.css'
 
 interface IEditTaskFormProps {
   taskName: string;

@@ -1,8 +1,6 @@
 import { useEffect, useState } from 'react'
 
 import { Store } from 'react-notifications-component';
-import EditTaskForm from '../../components/EditTaskForm/EditTaskForm';
-import Modal from '../../components/Modal/Modal';
 
 import { useAppDispatch, useAppSelector } from '../../hooks/useRedux';
 import { createNewProject } from '../../services/project.service';
@@ -70,19 +68,6 @@ const Dashboard = () => {
       <div>
         <h1>Your Projects</h1>
       </div>
-
-      <Modal
-        title='Something'
-        closeDialog={() => {}}
-        showModal={true}
-      >
-       <EditTaskForm 
-          taskName='something' 
-          taskDescription='something'
-          acceptClick={(value) => {}}
-          closeModal={() => {}}
-        />   
-      </Modal>
     </div>
   )
 }
