@@ -5,9 +5,9 @@ const taskScheme = mongoose.Schema(
         name: String,
         description: String,
 
-        is_complete: {
-            type: Boolean,
-            default: false,
+        status: {
+            type: String,
+            default: 'idea',
         },
 
         due_date: Date,
