@@ -2,7 +2,7 @@ import {useEffect, useState } from 'react'
 import { Store } from 'react-notifications-component';
 import { useAppDispatch, useAppSelector } from '../../hooks/useRedux';
 import Modal from '../../components/Modal/Modal';
-import { createNewProject, fetcProjecstByUser } from './../../services/project.service';
+import { createNewProject, fetcProjecstByUser, deleteProject } from './../../services/project.service';
 import { addProject } from '../../redux/slices/user.slice';
 import ProjectItems from './ProjectItmes';
 
@@ -18,6 +18,22 @@ const Dashboard = () => {
   const [projectName, setProjectName] = useState("")
 
   useEffect(() => {
+    fetchProjectsByUser()
+  }, [])
+  
+  useEffect(() =>{
+    fetch(userUrl)
+    .then((response) => response.json() )
+    .then((data) => setUserProject(data.meals))
+    .catch((error) => console.log(error));
+  },[userUrl]);
+
+  type ProjectType = {
+  idMeal: string;
+  strMeal: string;
+  }
+
+  function fetchProjectsByUser() {
     if(user != null) {
       dispatch(fetcProjecstByUser(user.userToken))
       .then(value => {
@@ -26,20 +42,14 @@ const Dashboard = () => {
         }
       })
     }
-  }, [])
-  
-  type ProjectType = {
-  idMeal: string;
-  strMeal: string;
   }
   
   function handleCreateNewProject() {
     if(projectName.trim() != "") {
       dispatch(createNewProject({projectName: projectName, userToken: user?.userToken ?? ""}))
       .then(value => {
-        if(value) {
-          console.log("value.payload ---> ", value.payload)
-          dispatch(addProject(value.payload))
+        if(value) {          
+          fetchProjectsByUser()
           Store.addNotification({
             title: "Project Created",
             message: `The Project ${projectName} Was Created`,
@@ -58,13 +68,16 @@ const Dashboard = () => {
       })
     }
   }
+
+  function handleDeleteProject(projectId: string) {    
+    dispatch(deleteProject(projectId))
+    .then(value => {
+      if(value != null) {
+        fetchProjectsByUser()
+      }
+    })
+  }
   
-    useEffect(() =>{
-    fetch(userUrl)
-    .then((response) => response.json() )
-    .then((data) => setUserProject(data.meals))
-    .catch((error) => console.log(error));
-  },[userUrl]);
 
   return (
     <div className='w-full h-full flex flex-col'>
@@ -98,11 +111,16 @@ const Dashboard = () => {
         <h1 className='text-center'>Your Project</h1>
         {
           user?.projects.map((project) => {
-            return <ProjectItems projectName={project.name} projectDate={project.createdAt} />
+            return (
+              <ProjectItems 
+                projectId={project._id}
+                projectName={project.name} 
+                projectDate={project.createdAt}
+                deleteProject={(value) => handleDeleteProject(value)}
+              />
+            )
           })
         }
-
-
       </div>
     </div>
   )

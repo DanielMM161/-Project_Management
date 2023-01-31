@@ -14,10 +14,14 @@ export const userSlice = createSlice({
     },
     setUser: (state, action) => {
       localStorage.setItem('user', JSON.stringify(action.payload))         
-      state.user = action.payload      
-      console.log("state en setUser after --> ", current(state))
+      state.user = action.payload            
     },
     addProject:(state, action) => {
+      if(state.user != null) {
+        state.user.projects = action.payload
+      }      
+    },
+    addSingleProject:(state, action) => {
       if(state.user != null) {
         state.user.projects = action.payload
       }      

@@ -36,11 +36,23 @@ export const createNewProject = createAsyncThunk('createNewProject',
   }
 
   const response = await axios.post(`${BASE_URL}/project/new`, {
-     project: createUser.projectName
+    name: createUser.projectName
   }, config)
 
-  if(response.status === 200) {        
+  if(response.status === 200) {         
     return response.data
+  } else {
+    return null    
+  }
+})
+
+export const deleteProject = createAsyncThunk('deleteProject',
+  async (projectId: string) => {
+
+  const response = await axios.delete(`${BASE_URL}/project/delete/${projectId}`)
+  
+  if(response.status === 200) {         
+    return true
   } else {
     return null    
   }

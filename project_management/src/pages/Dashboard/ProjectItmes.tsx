@@ -1,13 +1,15 @@
-import React from "react";
-
 interface IProjectItemsProps {
-  projectDate: string;
-  projectName: string;
+  projectId: string
+  projectDate: string
+  projectName: string
+  deleteProject: (projectId: string) => void
 };
 
 export default function ProjectItems({
+  projectId,
   projectName,
   projectDate,
+  deleteProject
 }: IProjectItemsProps) {
   return (
     <div className = "flex justify-center my-2">
@@ -20,7 +22,7 @@ export default function ProjectItems({
       <button className="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-1 px-4 rounded" onClick={() =>{}}>
         View
       </button>
-      <button className="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-4 rounded" onClick={() => {}}>
+      <button className="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-4 rounded" onClick={() => deleteProject(projectId)}>
         Delete
       </button>
       </div>
