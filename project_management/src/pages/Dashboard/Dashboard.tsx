@@ -30,7 +30,7 @@ const Dashboard = () => {
         if(value) {
           dispatch(fetchUserSession())          
           Store.addNotification({
-            title: "Project Creared",
+            title: "Project Created",
             message: `The Project ${projectName} Was Created`,
             type: "success",
             insert: "bottom",
@@ -93,13 +93,6 @@ const Dashboard = () => {
 
 
       </div>
-      <Modal
-        showModal={true}
-        title='hey'
-        closeDialog={() => {}}        
-      >
-        <EditTaskForm taskName='asd' acceptClick={() => {}} closeModal={() => {}} taskDescription="asdsaad"/>
-      </Modal>
     </div>
   )
 }

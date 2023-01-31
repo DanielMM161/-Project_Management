@@ -12,7 +12,9 @@ import CheckBox from '../CheckBox/CheckBox';
 
 interface IEditTaskFormProps {
   taskName: string;
-  taskDescription: string
+  taskDescription: string,
+  taskStatus: string,
+  taskDate: string
   closeModal: () => void
   acceptClick: (task: ITask) => void
 }
@@ -20,13 +22,16 @@ interface IEditTaskFormProps {
 const EditTaskForm = ({
   taskName,
   taskDescription,
+  taskStatus,
+  taskDate,
   acceptClick,
   closeModal
 }: IEditTaskFormProps) => {
 
   const [title, setTitle] = useState(taskName)
   const [desription, setDescription] = useState(taskDescription)
-  const [status, setStatus] = useState("")
+  const [status, setStatus] = useState(taskStatus)
+  const [dueDate, setDueDate] = useState(taskDate)
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()    
@@ -59,6 +64,9 @@ const EditTaskForm = ({
           inputValue={desription}
           onValueChange={(e) => setDescription(e)}        
         />
+
+        <h3>Due Date</h3>
+        <input type="date" value={dueDate} onChange={(e) => setDueDate(e.target.value)}/>
 
         <h3>Status</h3>
         <CheckBox text='Todo' onChange={(newStatus) => setStatus(newStatus)}/>
