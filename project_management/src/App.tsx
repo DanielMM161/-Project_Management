@@ -14,6 +14,7 @@ import "./App.css";
 
 import ProjectDashboard from './pages/ProjectDashboard/ProjectDashboard';
 import Navbar from './components/navbar';
+import Footer from './components/footer';
 
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
           <Route path="/project" element={<ProjectDashboard />} />
           <Route path="/dashboard" element={<Dashboard />} />
         </Routes>
+        <Footer />
       </BrowserRouter>
     </Provider>
   );
