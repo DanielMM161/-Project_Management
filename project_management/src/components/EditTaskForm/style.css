@@ -2,7 +2,7 @@
   margin-top: 1rem;
 }
 
-.form-edit input {
+.form-edit > input {
   padding: 0.2rem;
   border: 1px solid;    
   margin-bottom: 1rem;

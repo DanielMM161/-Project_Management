@@ -2,8 +2,10 @@ import {useEffect, useState } from 'react'
 import ProjectItems from './ProjectItmes';
 import { Store } from 'react-notifications-component';
 import { useAppDispatch, useAppSelector } from '../../hooks/useRedux';
-import { createNewProject } from '../../services/project.service';
 import { fetchUserSession } from '../../services/user.service';
+import Modal from '../../components/Modal/Modal';
+import { createNewProject } from './../../services/project.service';
+import EditTaskForm from '../../components/EditTaskForm/EditTaskForm';
 
 const Dashboard = () => {
 
@@ -28,7 +30,7 @@ const Dashboard = () => {
         if(value) {
           dispatch(fetchUserSession())          
           Store.addNotification({
-            title: "Project Creared",
+            title: "Project Created",
             message: `The Project ${projectName} Was Created`,
             type: "success",
             insert: "bottom",
