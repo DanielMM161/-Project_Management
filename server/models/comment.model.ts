@@ -1,6 +1,6 @@
 const mongoose = require("mongoose")
 
-const commentScheme = mongoose.Scheme(
+const commentScheme = mongoose.Schema(
     {
         description: String,
 

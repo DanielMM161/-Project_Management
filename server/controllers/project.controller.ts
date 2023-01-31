@@ -31,7 +31,6 @@ module.exports.deleteProject = (req, res) => {
         .catch(err => res.json({ message: "something went wrong", error: err }))
 }
 
-// api/projects/:id/tasks
 module.exports.findAllTasksOfProject = (req, res) => {
     Task.find({ project_id: req.params.id })
         .then(Tasks => res.json({ tasks: Tasks }))

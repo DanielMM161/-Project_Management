@@ -32,7 +32,6 @@ module.exports.deleteTask = (req, res) => {
         .catch(err => res.json({ message: "something went wrong", error: err }))
 }
 
-// api/tasks/:id/comments
 module.exports.findAllCommentsOfTask = (req, res) => {
     Comments.find({ task_id: req.params.id })
         .then(Comments => res.json({ comments: Comments }))
