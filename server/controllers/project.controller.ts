@@ -19,19 +19,23 @@ module.exports.findAllProjects = (req, res) => {
 }
 
 module.exports.findSingleProject = (req, res) => {
-    const token = req.headers['x-access-token']
-    try {
-        const secretKey = process.env.JWT_SECRET_KEY
-        const decoded = jwt.verify(token, secretKey)
-        const id = decoded.userId
-        Project.findOne({ _id: req.params.id })
+    // const token = req.headers['x-access-token']
+    // try {
+    //     const secretKey = process.env.JWT_SECRET_KEY
+    //     const decoded = jwt.verify(token, secretKey)
+    //     const id = decoded.userId
+    //     Project.findOne({ _id: req.params.id })
+    //         .then(singleProject => res.json({ project: singleProject }))
+    //         .catch(err => res.status(400).json(err))
+    // }
+    // catch (err) {
+    //     console.log(err)
+    //     res.status(400).json({err:'invaild token' })
+    // }
+
+    Project.findOne({ _id: req.params.id })
             .then(singleProject => res.json({ project: singleProject }))
             .catch(err => res.status(400).json(err))
-    }
-    catch (err) {
-        console.log(err)
-        res.status(400).json({err:'invaild token' })
-    }
 }
 
 module.exports.createNewProject = (req, res) => {
