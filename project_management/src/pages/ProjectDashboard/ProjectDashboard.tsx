@@ -2,12 +2,12 @@ import axios from 'axios';
 import React, { useEffect } from 'react'
 import { useState } from "react";
 import { useParams } from 'react-router-dom'
+import EditTaskForm from '../../components/EditTaskForm/EditTaskForm';
 import Modal from '../../components/Modal/Modal';
-
-type Task = {
-  name: string;
-  status: string;
-};
+import { useAppDispatch, useAppSelector } from '../../hooks/useRedux';
+import { ITask, Task } from '../../models/task.model';
+import { UseModal } from './../../hooks/useModal';
+import { fetchSingleTask, updateTask } from './../../services/task.service';
 
 type Projct = {
   name: string,
@@ -21,6 +21,12 @@ type inputArr = {
 }
 const ProjectDashboard = () => {
 
+  const {showModal, toggle} = UseModal()
+  const dispatch = useAppDispatch()
+  const userState = useAppSelector(state => state.user)
+  const { user } = userState
+  const [taskSelected, setTaskSelected] = useState<Task>()
+
 
   const [arr, setArr] = useState<inputArr[]>([]);
   const { projectId } = useParams()
@@ -31,7 +37,6 @@ const ProjectDashboard = () => {
   const [finished, setFinished] = useState<Task[]>([])
   const [project, setProject] = useState<Projct>()
   const [isTaskAdded, setIsTaskAdded] = useState<Boolean>(false)
-
 
 
   const addInput = () => {
@@ -89,6 +94,39 @@ const ProjectDashboard = () => {
     setIsTaskAdded(true)
   }
 
+  function onClickTask(task: Task) {
+    setTaskSelected(task)
+    toggle()
+  }
+
+  function handleEditTask(newTask: Task) {    
+    dispatch(
+      updateTask({
+        name: newTask.name,
+        status: newTask.status,
+        createdAt: newTask.createdAt,
+        taskId: newTask._id,
+        userToken: user?.userToken ?? "",
+        desription: newTask.description ?? ""
+      })
+    )
+    .then(value => {      
+      if(value != null) {
+        setIsTaskAdded(true)
+        toggle()
+      }
+    })
+  }
+
+  function formatDate(date: string): string {
+    try {
+      const dateSplit = date.split('T')
+      return dateSplit[0]
+    } catch (error) {
+      return ""
+    }
+  }
+
   return (
     <div className='m-5 mt-20'>
       <div className='px-10 mt-5'>
@@ -102,7 +140,7 @@ const ProjectDashboard = () => {
           </div>
           <div className='p-4'>
             {ideas.map((task, index) =>
-              <div className='my-2 py-1 border' key={index}>
+              <div className='my-2 py-1 border cursor-pointer' key={index} onClick={() => onClickTask(task)}>
                 {task.name}
               </div>)}
 
@@ -132,7 +170,7 @@ const ProjectDashboard = () => {
           </div>
           <div className='p-4'>
             {todo.map((task, index) =>
-              <div className='my-2 py-1 border' key={index}>
+              <div className='my-2 py-1 border cursor-pointer' key={index} onClick={() => onClickTask(task)}>
                 {task.name}
               </div>)}
           </div>
@@ -143,7 +181,7 @@ const ProjectDashboard = () => {
           </div>
           <div className='p-4'>
             {inProgress.map((task, index) =>
-              <div className='my-2 py-1 border' key={index}>
+              <div className='my-2 py-1 border cursor-pointer' key={index} onClick={() => onClickTask(task)}>
                 {task.name}
               </div>)}
           </div>
@@ -154,14 +192,30 @@ const ProjectDashboard = () => {
           </div>
           <div className='p-4'>
             {finished.map((task, index) =>
-              <div className='my-2 py-1 border' key={index}>
+              <div className='my-2 py-1 border cursor-pointer' key={index} onClick={() => onClickTask(task)}>
                 {task.name}
               </div>)}
           </div>
         </div>
       </div>
-    </div>
 
+      <Modal
+        title=''
+        showModal={showModal}
+        closeDialog={() => toggle()}        
+      >
+        <EditTaskForm
+          taskId={taskSelected?._id ?? ""}
+          taskName={taskSelected?.name ??  ""}
+          taskDescription={""}
+          taskDate={ formatDate(taskSelected?.createdAt ?? "")}
+          taskStatus={taskSelected?.status ?? "todo"}
+          acceptClick={(task) => handleEditTask(task)}
+          closeModal={() => toggle()}
+        />
+
+      </Modal>
+    </div>
   )
 }
 
