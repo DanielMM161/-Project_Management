@@ -18,7 +18,7 @@ const CheckBox = ({
   const [status, setStatus] = useState<IStateStatus[]>([
     {text: 'idea', clicked: false},
     {text: 'todo', clicked: false},
-    {text: 'in_progress', clicked: false},
+    {text: 'inProgress', clicked: false},
     {text: 'finished', clicked: false}
   ])
 
