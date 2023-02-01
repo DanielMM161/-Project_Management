@@ -3,12 +3,14 @@ import axios from 'axios';
 import React, { useEffect } from 'react'
 import { useState } from "react";
 import { Link, useParams } from 'react-router-dom'
+import CommentForm from '../../components/CommentForm/CommentForm';
 import EditTaskForm from '../../components/EditTaskForm/EditTaskForm';
 import Modal from '../../components/Modal/Modal';
 import { useAppDispatch, useAppSelector } from '../../hooks/useRedux';
+import { ICommentTask } from '../../models/comment.model';
 import { ITask, Task } from '../../models/task.model';
 import { UseModal } from './../../hooks/useModal';
-import { fetchSingleTask, updateTask } from './../../services/task.service';
+import { fetchCommentByTask, fetchSingleTask, updateTask } from './../../services/task.service';
 
 
 type Projct = {
@@ -21,6 +23,12 @@ type inputArr = {
   id: number,
   value: string
 }
+
+const FORM = {
+  NONE: 0,
+  EDIT: 1,
+  COMMENT: 2
+}
 const ProjectDashboard = () => {
 
   const {showModal, toggle} = UseModal()
@@ -28,6 +36,9 @@ const ProjectDashboard = () => {
   const userState = useAppSelector(state => state.user)
   const { user } = userState
   const [taskSelected, setTaskSelected] = useState<Task>()
+  const [showForm, setShowForm] = useState(FORM.NONE)
+  const [commentsTask, setCommentTask] = useState<ICommentTask[]>([])
+  const [taskId, setTaskId] = useState("")
 
   const [arr, setArr] = useState<inputArr[]>([]);
   const { projectId } = useParams()
@@ -111,13 +122,8 @@ const ProjectDashboard = () => {
     }
     task.status = newStatus
 
-    const config = {
-      headers: {
-        ['x-access-token']: user?.userToken
-      }
-    }
 
-    axios.put(`http://localhost:5000/api/task/update/${task._id}`, task, config)
+    axios.put(`http://localhost:5000/api/task/update/${task._id}`, task)
       .then(res => {
         setIsTaskAdded(true)
       })
@@ -126,7 +132,19 @@ const ProjectDashboard = () => {
 
   function onClickTask(task: Task) {
     setTaskSelected(task)
+    setShowForm(FORM.EDIT)
     toggle()
+  }
+
+  function onClickComment(taskId: string) {
+    dispatch(fetchCommentByTask(taskId))
+    .then(value => {
+      const comments = value.payload['comments']    
+      setCommentTask(comments)       
+      setTaskId(taskId)
+      setShowForm(FORM.COMMENT)
+      toggle()
+    })
   }
 
   function handleEditTask(newTask: Task) {    
@@ -174,7 +192,7 @@ const ProjectDashboard = () => {
                 <h3 className='cursor-pointer w-full text-left' onClick={() => onClickTask(task)}>{task.name}</h3>
                 <div className='flex justify-between gap-1 items-end'>
                   <div className='flex mx-3 items-end'>
-                    <button className='bg-inherit text-gray-700 hover:text-gray-500 mr-1'>
+                    <button className='bg-inherit text-gray-700 hover:text-gray-500 mr-1' onClick={() => onClickComment(task._id)}>
                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-chat-left-text-fill" viewBox="0 0 16 16">
                         <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4.414a1 1 0 0 0-.707.293L.854 15.146A.5.5 0 0 1 0 14.793V2zm3.5 1a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1h-9zm0 2.5a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1h-9zm0 2.5a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5z" />
                       </svg>
@@ -226,7 +244,7 @@ const ProjectDashboard = () => {
                 <h3 className='cursor-pointer w-full text-left' onClick={() => onClickTask(task)}>{task.name}</h3>
                 <div className=' flex justify-between gap-1 items-end'>
                   <div className='flex mx-3 items-end'>
-                    <button className='bg-inherit text-gray-700 hover:text-gray-500 mr-1'>
+                    <button className='bg-inherit text-gray-700 hover:text-gray-500 mr-1' onClick={() => onClickComment(task._id)}>
                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-chat-left-text-fill" viewBox="0 0 16 16">
                         <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4.414a1 1 0 0 0-.707.293L.854 15.146A.5.5 0 0 1 0 14.793V2zm3.5 1a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1h-9zm0 2.5a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1h-9zm0 2.5a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5z" />
                       </svg>
@@ -259,7 +277,7 @@ const ProjectDashboard = () => {
                 <h3 className='cursor-pointer w-full text-left' onClick={() => onClickTask(task)}>{task.name}</h3>
                 <div className=' flex justify-between gap-1 items-end'>
                   <div className='flex mx-3 items-end'>
-                    <button className='bg-inherit text-gray-700 hover:text-gray-500 mr-1'>
+                    <button className='bg-inherit text-gray-700 hover:text-gray-500 mr-1' onClick={() => onClickComment(task._id)}>
                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-chat-left-text-fill" viewBox="0 0 16 16">
                         <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4.414a1 1 0 0 0-.707.293L.854 15.146A.5.5 0 0 1 0 14.793V2zm3.5 1a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1h-9zm0 2.5a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1h-9zm0 2.5a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5z" />
                       </svg>
@@ -291,7 +309,7 @@ const ProjectDashboard = () => {
                 <h3 className='cursor-pointer w-full text-left' onClick={() => onClickTask(task)}>{task.name}</h3>
                 <div className=' flex justify-between gap-1 items-center'>
                   <div className='flex mx-3 items-center'>
-                    <button className='bg-inherit text-gray-700 hover:text-gray-500 mr-1'>
+                    <button className='bg-inherit text-gray-700 hover:text-gray-500 mr-1' onClick={() => onClickComment(task._id)}>
                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-chat-left-text-fill" viewBox="0 0 16 16">
                         <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4.414a1 1 0 0 0-.707.293L.854 15.146A.5.5 0 0 1 0 14.793V2zm3.5 1a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1h-9zm0 2.5a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1h-9zm0 2.5a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5z" />
                       </svg>
@@ -313,15 +331,25 @@ const ProjectDashboard = () => {
         showModal={showModal}
         closeDialog={() => toggle()}        
       >
-        <EditTaskForm
-          taskId={taskSelected?._id ?? ""}
-          taskName={taskSelected?.name ??  ""}
-          taskDescription={taskSelected?.description ?? ""}
-          taskDate={ formatDate(taskSelected?.createdAt ?? "")}
-          taskStatus={taskSelected?.status ?? "todo"}
-          acceptClick={(task) => handleEditTask(task)}
-          closeModal={() => toggle()}
-        />
+        {showForm === FORM.EDIT ? (
+          <EditTaskForm
+            taskId={taskSelected?._id ?? ""}
+            taskName={taskSelected?.name ??  ""}
+            taskDescription={taskSelected?.description ?? ""}
+            taskDate={ formatDate(taskSelected?.createdAt ?? "")}
+            taskStatus={taskSelected?.status ?? "todo"}
+            acceptClick={(task) => handleEditTask(task)}
+            closeModal={() => toggle()}
+          />
+        ) : null}
+
+        {showForm === FORM.COMMENT ? (
+          <CommentForm
+            task_id={taskId}
+            comments={commentsTask}
+            closeModal={() => toggle()}
+          />
+        ) : null}
 
       </Modal>
     </div>

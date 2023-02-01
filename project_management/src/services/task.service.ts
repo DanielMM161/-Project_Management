@@ -58,3 +58,17 @@ export const updateTask = createAsyncThunk('updateTask',
   }
   
 })
+
+
+export const fetchCommentByTask = createAsyncThunk('fetchCommentByTask',
+  async (taskId: string) => {
+
+  const response = await axios.get(`${BASE_URL}/task/${taskId}/comments`)
+
+  if(response.status === 200 || response.status === 201) {        
+    return response.data
+  } else {    
+    return null
+  }
+  
+})

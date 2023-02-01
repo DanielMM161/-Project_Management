@@ -26,12 +26,17 @@ const Login = () => {
       .then(value => {
         if(value.payload) {
           const user: IUser = value.payload          
-          dispatch(setUser({email: user.email, fullName: user.fullname, userToken: user.userToken, projects: []}))
+          dispatch(setUser({
+            id: user.id,
+            email: user.email, 
+            fullname: user.fullname, 
+            userToken: user.userToken, 
+            projects: []
+          }))
           navigate('/dashboard')
         }
       })
-    }
-    //Todo Manage Error Here
+    }    
   }
   
   return (

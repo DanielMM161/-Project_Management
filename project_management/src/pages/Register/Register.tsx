@@ -23,7 +23,7 @@ const Register = () => {
       e.preventDefault()
   
       const userRegistration: IUserRegister = {
-        fullName: fullName,
+        fullname: fullName,
         email: email,
         password: password,
         repeatPassword: repeatPassword
@@ -33,7 +33,7 @@ const Register = () => {
       .then(value => {
         if(value.payload != null) {
           const user: IUser = value.payload          
-          dispatch(setUser({email: user.email, fullName: user.fullname, userToken: user.userToken}))
+          dispatch(setUser({email: user.email, fullname: user.fullname, userToken: user.userToken}))
           navigate('/dashboard')
         }
       })

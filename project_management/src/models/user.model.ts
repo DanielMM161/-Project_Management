@@ -4,7 +4,7 @@ export interface IUserAuth {
 }
 
 export interface IUserRegister extends IUserAuth {
-  fullName: string
+  fullname: string
   repeatPassword: string
 }
 

@@ -39,7 +39,7 @@ export const createUser = createAsyncThunk('createUser',
   async (userRegistration: IUserRegister, thunkAPI) => {
  
   const response = await axios.post(`${BASE_URL}/signup`, {
-    fullName: userRegistration.fullName,
+    fullName: userRegistration.fullname,
     email: userRegistration.email,
     password: userRegistration.password,
     confirmPassword: userRegistration.repeatPassword
